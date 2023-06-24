@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <GL/glut.h>
+
+GLfloat a = 0, b = 0, c = 0, d = 0, e = 0;
+
+void building();
+void building1();
+void outline();
+void blast();
+void road();
+void display2();
+void display3();
+void build_outline();
+void update(int value);
+void display(void);
+
+void update(int value) {
+    a += 20.0; // Plane position takeoff on x-axis
+    b -= 10.0; // Road Strip backward movement
+    c += 15; // Take off at certain angle on y-axis
+
+    if (b <= -78.0) // Moving of runway
+        b = 0.0;
+
+    glutPostRedisplay();
+    glutTimerFunc(150, update, 0); // Delay
+}
+
+void display(void) {
+    glClear(GL_COLOR_BUFFER_BIT);
+    road();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_POLYGON); // Rectangular body
+    glVertex2f(0.0, 30.0);
+    glVertex2f(0.0, 55.0);
+    glVertex2f(135.0, 55.0);
+    glVertex2f(135.0, 30.0);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_POLYGON); // Upper triangle construction plane
+    glVertex2f(135.0, 55.0);
+    glVertex2f(150.0, 50.0);
+    glVertex2f(155.0, 45.0);
+    glVertex2f(160.0, 40.0);
+    glVertex2f(135.0, 40.0);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_LINE_LOOP); // Outline of upper triangle plane
+    glVertex2f(135.0, 55.0);
+    glVertex2f(150.0, 50.0);
+    glVertex2f(155.0, 45.0);
+    glVertex2f(160.0, 40.0);
+    glVertex2f(135.0, 40.0);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_POLYGON); // Lower triangle
+    glVertex2f(135.0, 40.0);
+    glVertex2f(160.0, 40.0);
+    glVertex2f(160.0, 37.0);
+    glVertex2f(145.0, 30.0);
+    glVertex2f(135.0, 30.0);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_POLYGON); // Back wing
+    glVertex2f(0.0, 55.0);
+    glVertex2f(0.0, 80.0);
+    glVertex2f(30.0, 55.0);
+    glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(a, c, 0.0);
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_POLYGON); // Front wing
+    glVertex2f(50.0, 55.0);
+    glVertex2f(80.0, 55.0);
+    glVertex2f(60.0, 70.0);
+    glEnd();
+    glPopMatrix();
+
+    if (a > 1200) { // Blast after plane exceeds certain position
+        glPushMatrix();
+        glColor3f(1.0, 0.0, 0.0);
+        glTranslatef(1250, 55, 0);
+        blast();
+        glPopMatrix();
+    }
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+void road() {
+    glPushMatrix();
+    glTranslated(b, 0.0, 0.0);
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_POLYGON); // Road
+    glVertex2f(0.0, 0.0);
+    glVertex2f(0.0, 30.0);
+    glVertex2f(1200.0, 30.0);
+    glVertex2f(1200.0, 0.0);
+    glEnd();
+    glPopMatrix();
+
+    int l;
+    glPushMatrix();
+    glTranslated(b, 0.0, 0.0);
+    glColor3f(1.0, 1.0, 1.0);
+    for (l = 0; l <= 1200; l += 200) {
+        glBegin(GL_POLYGON); // Road Border
+        glVertex2f(l, 0.0);
+        glVertex2f(l, 10.0);
+        glVertex2f(l + 100, 10.0);
+        glVertex2f(l + 100, 0.0);
+        glEnd();
+    }
+    glPopMatrix();
+}
+
+void blast() {
+    int m;
+    GLfloat x = 25.0;
+    GLfloat y = 37.0;
+    GLfloat radius = 30.0;
+    int triangleAmount = 20;
+    GLfloat twicePi = 2.0f * 3.14159265358979323846;
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x, y); // center of circle
+    for (m = 0; m <= triangleAmount; m++) {
+        glVertex2f(
+            x + (radius * cos(m * twicePi / triangleAmount)),
+            y + (radius * sin(m * twicePi / triangleAmount))
+        );
+    }
+    glEnd();
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(1200, 600);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("Plane Takeoff Animation");
+    glClearColor(0.0, 0.0, 1.0, 0.0);
+    gluOrtho2D(0.0, 1200.0, 0.0, 600.0);
+    glutDisplayFunc(display);
+    glutTimerFunc(0, update, 0);
+    glutMainLoop();
+    return 0;
+}
