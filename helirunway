@@ -1,0 +1,135 @@
+#include <GL/glut.h>
+#include <math.h>
+
+// Global variables
+GLfloat helicopterX = -150.0;   // Initial helicopter X position
+GLfloat helicopterY = -250.0;   // Initial helicopter Y position
+GLfloat helicopterZ = -300.0;   // Initial helicopter Z position
+GLfloat rotorAngle = 0.0;       // Angle of rotation for rotor blades
+GLfloat helicopterSpeed = 0.5;  // Helicopter speed
+GLfloat helicopterAltitude = 0.0;  // Helicopter altitude
+
+// Function to draw the helicopter
+void drawHelicopter()
+{
+    // Body
+    glColor3f(1.0, 0.0, 0.0); // Red color
+    glPushMatrix();
+    glTranslatef(helicopterX, helicopterY, helicopterZ);
+    glutSolidSphere(10, 16, 16); // Helicopter body as a sphere
+    glPopMatrix();
+
+    // Rotor blades
+    glColor3f(0.0, 1.0, 0.0); // Green color
+    glPushMatrix();
+    glTranslatef(helicopterX, helicopterY, helicopterZ);
+    glRotatef(rotorAngle, 0.0, 1.0, 0.0); // Rotate blades along Y-axis
+    glTranslatef(0.0, 10.0, 0.0);
+    glScalef(1.0, 0.1, 6.0); // Blade shape
+    glutSolidCube(10); // Helicopter blades as a cube
+    glPopMatrix();
+}
+
+// Function to draw the runway
+void drawRunway()
+{
+    // Ground
+    glColor3f(0.5, 0.5, 0.5); // Gray color
+    glBegin(GL_QUADS);
+    glVertex3f(-500.0, -300.0, -500.0);
+    glVertex3f(-500.0, -300.0, 500.0);
+    glVertex3f(500.0, -300.0, 500.0);
+    glVertex3f(500.0, -300.0, -500.0);
+    glEnd();
+
+    // Runway
+    glColor3f(0.4, 0.4, 0.4); // Dark gray color
+    glBegin(GL_QUADS);
+    glVertex3f(-100.0, -300.0, -100.0);
+    glVertex3f(-100.0, -300.0, 100.0);
+    glVertex3f(100.0, -300.0, 100.0);
+    glVertex3f(100.0, -300.0, -100.0);
+    glEnd();
+}
+
+// Function to draw the background
+void drawBackground()
+{
+    // Sky
+    glColor3f(0.5, 0.7, 1.0); // Light blue color
+    glBegin(GL_QUADS);
+    glVertex3f(-500.0, 500.0, -500.0);
+    glVertex3f(-500.0, -300.0, -500.0);
+    glVertex3f(500.0, -300.0, -500.0);
+    glVertex3f(500.0, 500.0, -500.0);
+    glEnd();
+}
+
+// Function to update the helicopter position and altitude
+void update(int value)
+{
+    // Move helicopter forward
+    helicopterZ += helicopterSpeed;
+
+    // Increase altitude until reaching a certain point
+    if (helicopterAltitude < 200.0) {
+        helicopterAltitude += 1.0;
+        helicopterY += 1.0;
+    }
+
+    // Rotate rotor blades
+    rotorAngle += 5.0;
+
+    // Redraw the scene
+    glutPostRedisplay();
+    glutTimerFunc(10, update, 0);
+}
+
+// Function to display the scene
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    // Set the camera position
+    gluLookAt(0.0, 0.0, 800.0,  // Camera position
+              0.0, 0.0, 0.0,    // Look at the origin
+              0.0, 1.0, 0.0);   // Up direction
+
+    // Draw the background
+    drawBackground();
+
+    // Draw the runway
+    drawRunway();
+
+    // Draw the helicopter
+    drawHelicopter();
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+// Function to handle window resizing
+void reshape(int width, int height)
+{
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (double)width / (double)height, 1.0, 1000.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("Helicopter Takeoff");
+    glEnable(GL_DEPTH_TEST);
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutTimerFunc(0, update, 0);
+    glutMainLoop();
+    return 0;
+}
