@@ -1,0 +1,93 @@
+#include <GL/glut.h>
+#include <math.h>
+
+// Global variables
+GLfloat helicopterX = -50.0;  // Initial helicopter X position
+GLfloat helicopterY = 0.0;    // Initial helicopter Y position
+GLfloat turbineAngle = 0.0;   // Angle of rotation for turbines
+
+void init()
+{
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-500.0, 500.0, -500.0, 500.0);
+}
+
+void drawHelicopter()
+{
+    // Helicopter body
+    glColor3f(1.0, 1.0, 1.0);  // Set color to white
+    glPushMatrix();
+    glTranslatef(helicopterX, helicopterY, 0.0);
+    glBegin(GL_POLYGON);
+    glVertex2f(0.0, 10.0);
+    glVertex2f(20.0, 0.0);
+    glVertex2f(20.0, -60.0);
+    glVertex2f(-20.0, -60.0);
+    glVertex2f(-20.0, 0.0);
+    glEnd();
+    glPopMatrix();
+
+    // Turbines
+    glColor3f(0.0, 0.0, 1.0);  // Set color to blue
+    glPushMatrix();
+    glTranslatef(helicopterX, helicopterY, 0.0);
+    glRotatef(turbineAngle, 0.0, 0.0, 1.0);
+    glBegin(GL_TRIANGLES);
+    glVertex2f(0.0, -60.0);
+    glVertex2f(5.0, -70.0);
+    glVertex2f(-5.0, -70.0);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2f(0.0, -60.0);
+    glVertex2f(35.0, -75.0);
+    glVertex2f(25.0, -85.0);
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    glVertex2f(0.0, -60.0);
+    glVertex2f(-35.0, -75.0);
+    glVertex2f(-25.0, -85.0);
+    glEnd();
+    glPopMatrix();
+}
+
+void update(int value)
+{
+    // Move helicopter horizontally
+    helicopterX += 1.0;
+
+    // Rotate turbines
+    turbineAngle += 5.0;
+
+    // Check if helicopter has reached the destination
+    if (helicopterX > 500.0) {
+        helicopterX = -50.0;
+    }
+
+    glutPostRedisplay();
+    glutTimerFunc(10, update, 0);
+}
+
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    drawHelicopter();
+
+    glFlush();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("Helicopter Animation");
+    init();
+    glutDisplayFunc(display);
+    glutTimerFunc(0, update, 0);
+    glutMainLoop();
+    return 0;
+}
