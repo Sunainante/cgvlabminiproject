@@ -1,480 +1,549 @@
-# cgvlabminiproject
-#include<stdio.h>
-#include<GL/glut.h>
-GLfloat a=0,b=0,c=0,d=0,e=0;
-void building();
-void building1();
-void outline();
-void blast();
-void road();
-void display2();
-void display3();
-void build_outline();
-void update(int value)
+#include <windows.h>
+#include <string.h>;
+#include <stdarg.h>;
+#include <stdio.h>;
+#include <glut.h>;
+static double x=0.0;
+static double a=0.0;
+bool change=true;
+static double r1=1.0;
+bool rot=false;
+bool play=false;
+
+void doDisplay();
+
+static float y1=0;
+void
+stroke_output(GLfloat x, GLfloat y, char *format,...)
 {
-a+=20.0; //Plane position takeoff on x axis
-b-=10.0; //Road Strip backward movement
-c+=15; //take off at certain angle on y axis
-if(b<=-78.0)// moving of run way
-b=0.0;
-glutPostRedisplay();
-glutTimerFunc(150,update,0);//delay
+va_list args;
+char buffer[200], *p;
+va_start(args, format);
+vsprintf(buffer, format, args);
+va_end(args);
+glPushMatrix();
+glTranslatef(-2.5, y, 0);
+glScaled(0.003, 0.005, 0.005);
+for (p = buffer; *p; p++)
+glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+glPopMatrix();
 }
-void display(void)
-{
-glClear(GL_COLOR_BUFFER_BIT);
-road();
+
+void tree(){
+
 glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);//rectangular body
-glVertex2f(0.0,30.0);
-glVertex2f(0.0,55.0);
-glVertex2f(135.0,55.0);
-glVertex2f(135.0,30.0);
+
+glColor3f(0,1,0);
+glBegin(GL_POLYGON);
+
+glVertex2f(0,0);
+
+glVertex2f(-.5,0.5);
+
+glVertex2f(0,0.7);
+
+glVertex2f(-0.3,1);
+
+
+
+ 
+glVertex2f(0.2,0.9);
+
+glVertex2f(0.8,2);
+
+glVertex2f(0.8,0.9);
+glVertex2f(1.2,1);
+glVertex2f(0.8,0.8);
+glVertex2f(1.2,0.5);
+glVertex2f(0.5,0);
+
 glEnd();
 glPopMatrix();
+
 glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);//upper triangle construction plane
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
+glTranslatef(0.5,-0.4,0);
+glScaled(0.2,1,0.1);
+glutSolidCube(1.0);
 glPopMatrix();
-glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);//outline of upper triangle plane
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);//lower triangle
-glVertex2f(135.0,40.0);
-glVertex2f(160.0,40.0);
-glVertex2f(160.0,37.0);
-glVertex2f(145.0,30.0);
-glVertex2f(135.0,30.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);//back wing
-glVertex2f(0.0,55.0);
-glVertex2f(0.0,80.0);
-glVertex2f(10.0,80.0);
-glVertex2f(40.0,55.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);//left side wing
-glVertex2f(65.0,55.0);
-glVertex2f(50.0,70.0);
-glVertex2f(75.0,70.0);
-glVertex2f(90.0,55.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(a,c,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);//rightside wing
-glVertex2f(70.0,40.0);
-glVertex2f(100.0,40.0);
-glVertex2f(80.0,15.0);
-glVertex2f(50.0,15.0);
-glEnd();
-glPopMatrix();
-if(c>360) //timer to jump to next display
-{
-display2();
-d+=20;//plane takeoff on x in 2nd display
 }
-if(a>500.0)//window position during take off
-{
-a=0.0;
-b=0.0;
+
+void drawSnowman(){
+
+//complete snowman
+glPushMatrix();
+
+//glScaled(1,1,0.1);
+glColor3f(1,1,1);
+
+glPushMatrix();
+glTranslatef(0,-.5,0);
+glScaled(1.4,1.4,1.4);
+
+glPushMatrix();
+glTranslatef(0,-.1,0);
+glScaled(1.2,1,1.2);
+//top spere
+glPushMatrix();
+glScaled(0.8,1.0,0.8);
+
+
+
+
+glTranslatef(0.0,1.2,0.0);
+glColor3f(1,1,1);
+glutSolidSphere(0.4,80,120);
+glPopMatrix();
+
+//eyes
+glPushMatrix();
+glScaled(0.8,1.0,0.8);
+glTranslatef(0.2,1.4,0.25);
+glutSolidSphere(0.06,80,120);
+glPopMatrix();
+
+glPushMatrix();
+glScaled(0.8,1.0,0.8);
+glTranslatef(-0.2,1.4,0.25);
+glColor3f(1,1,1);
+glutSolidSphere(0.06,80,120);
+glPopMatrix();
+
+//nose
+
+glPushMatrix();
+glScaled(0.8,1.0,0.8);
+
+
+
+
+glTranslatef(0.0,1.3,0.0);
+glutSolidCone(0.1,0.9,80,120);
+glPopMatrix();
+
+//Hat
+
+glPushMatrix();
+glColor3f(1,0,0);
+glTranslatef(0.0,1.5,0.0);
+glRotatef(-90,1.0,0.0,0.0);
+glutSolidCone(0.2,0.6,10,10);
+glPopMatrix();
+
+glPopMatrix();
+
+//base spere
+glPushMatrix();
+glColor3f(1,1,1);
+
+glScaled(0.8,0.8,0.8);
+glTranslatef(0.0,0.2,0.0);
+glutSolidSphere(0.9,80,120);
+
+
+
+ 
+glPopMatrix();
+
+//buttons
+glPushMatrix();
+glColor3f(1,0,0);
+
+glTranslatef(0.0,0.5,1.0);
+glScaled(0.2,0.2,0.2);
+glutSolidSphere(0.5,80,120);
+glPopMatrix();
+
+glPushMatrix();
+glColor3f(1,0,0);
+
+glTranslatef(0.0,0,1.0);
+glScaled(0.2,0.2,0.2);
+glutSolidSphere(0.5,80,120);
+glPopMatrix();
+
+
+
+ 
+glPushMatrix();
+glColor3f(1,0,0);
+
+glTranslatef(0.0,0.25,1.0);
+glScaled(0.2,0.2,0.2);
+glutSolidSphere(0.5,80,120);
+glPopMatrix();
+
+glPopMatrix();
+
+glPopMatrix();
+glPopMatrix();
+
 }
-if(c>750)//timer to jump to 3rd display
-{
-display3();
-e+=20;//plane takeoff on x in 3rd display
-if(e>250)//timer to call blast function
-{
-blast();
-e=250;
+
+void andro(){
+
+glPushMatrix();
+
+
+
+
+glTranslatef(a,y1,0.0);
+
+//body
+glPushMatrix();
+glScaled(0.3,1.5,0.3);
+glRotatef(90,1,0,0);
+glutSolidTorus(0.5,1,30,30);
+glPopMatrix();
+//hands
+glPushMatrix();
+glTranslatef(0.5,0,0);
+glScaled(0.1,1,0.1);
+glRotatef(90,1,0,0);
+glutSolidTorus(0.4,0.8,30,30);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.5,0,0);
+glScaled(0.1,1,0.1);
+glRotatef(90,1,0,0);
+glutSolidTorus(0.4,0.8,30,30);
+glPopMatrix();
+
+
+
+
+//head
+
+glPushMatrix();
+glTranslatef(0,0.8,0);
+glutSolidSphere(0.4,30,30);
+glPopMatrix();
+
+//eyes
+glPushMatrix();
+glTranslatef(0.15,0.85,0.3);
+glutSolidSphere(0.1,30,30);
+glPopMatrix();
+glPushMatrix();
+glTranslatef(-0.15,0.85,0.3);
+glutSolidSphere(0.1,30,30);
+glPopMatrix();
+
+//ears
+
+glPushMatrix();
+glTranslatef(-0.15,1,0);
+glScaled(0.5,2,0);
+
+
+
+
+glutSolidSphere(0.2,30,30);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(0.15,1,0);
+glScaled(0.5,2,0);
+glutSolidSphere(0.2,30,30);
+glPopMatrix();
+
+// Legs
+glPushMatrix();
+
+glPushMatrix();
+glTranslatef(0.15,-0.8,0);
+glRotatef(r1,1,0,0);
+glScaled(0.1,1,0.1);
+glRotatef(90,1,0,0);
+glutSolidTorus(0.4,0.8,30,30);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.15,-0.8,0);
+
+
+
+
+glRotatef(r1,1,0,0);
+glScaled(0.1,1,0.1);
+glRotatef(90,1,0,0);
+glutSolidTorus(0.4,0.8,30,30);
+glPopMatrix();
+
+glPopMatrix(); // legs end
+
+glPopMatrix(); //complete andro
+
 }
+
+void snowMan(double rang,double ad)
+{
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glLoadIdentity();
+glTranslatef(0.0f,0.0f,-13.0f);
+
+if(rot){
+glRotatef(30,0,1,0);
 }
+
+
+
+
+glColor3f(0.3,.3,.3);
+
+// Draw the bottom box
+glPushMatrix();
+// glRotatef(rang,1.0f,0.0f,0.0f);
+glScaled(1.0,0.03,100.8);
+glTranslatef(0.0,-30.2,0.0);
+glutSolidCube(7.0);
+glPopMatrix();
+
+//Trees
+glColor3f(1,1,0);
+glPushMatrix();
+glTranslatef(0.0,0.0,rang);
+
+for(int i=0;i&lt;500;i+=13){
+
+glPushMatrix();
+glTranslatef(2.5,-0.5,7.0+i);
+tree();
+glPopMatrix();
+
+
+
+
+glPushMatrix();
+glTranslatef(-2.5,-0.5,0+i);
+tree();
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(0.0,0.0,i+40);
+glutSolidTorus(0.2, 3.0, 10, 15);
+glPopMatrix();
+
+}
+
+glPopMatrix();
+
+// Call Snowman
+if(change){
+
+glPushMatrix();
+glTranslatef(ad,0,0);
+
+
+
+
+drawSnowman();
+glPopMatrix();
+}else{
+if(y1&gt;=1.5)
+glRotatef(75,1,0,0);
+andro();
+}
+
 glFlush();
+glutSwapBuffers();
 }
-void building()
+
+void w()
 {
-glColor3f(0.60,0.40,0.70);
-glBegin(GL_POLYGON);
-glVertex2f(350.0,80.0);
-glVertex2f(350.0,480.0);
-glVertex2f(400.0,400.0);
-glVertex2f(400.0,0.0);
-glEnd();
-glColor3f(0.75,0.75,0.75);
-glBegin(GL_POLYGON);
-glVertex2f(400.0,0.0);
-glVertex2f(400.0,400.0);
-glVertex2f(450.0,400.0);
-glVertex2f(450.0,0.0);
-glEnd();
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(400.0,400.0);
-glVertex2f(350.0,480.0);
-glVertex2f(400.0,480.0);
-glVertex2f(450.0,400.0);
-glEnd();
-glColor3f(0.60,0.40,0.70);
-glBegin(GL_POLYGON);//upper triangle of building
-glVertex2f(400.0,400.0);
-glVertex2f(350.0,480.0);
-glVertex2f(400.0,480.0);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);//seperation line of floors
-glVertex2f(350.0,180);
-glVertex2f(400.0,100);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(350.0,280);
-glVertex2f(400.0,200);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(350.0,380);
-glVertex2f(400.0,300);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(450.0,100);
-glVertex2f(400.0,100);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(450.0,200);
-glVertex2f(400.0,200);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(450.0,300);
-glVertex2f(400.0,300);
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINES);
-glVertex2f(350.0,180);
-glEnd();
-build_outline();
+r1+=10;
+x -= .08;
+
+snowMan(x,a);
+
+
+
+
 }
-void build_outline()//building out lines
+
+void s()
 {
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);
-glVertex2f(350.0,80.0);
-glVertex2f(350.0,480.0);
-glVertex2f(400.0,400.0);
-glVertex2f(400.0,0.0);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);
-glVertex2f(400.0,0.0);
-glVertex2f(400.0,400.0);
-glVertex2f(450.0,400.0);
-glVertex2f(450.0,0.0);
-glEnd();
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);
-glVertex2f(400.0,400.0);
-glVertex2f(350.0,480.0);
-glVertex2f(400.0,480.0);
-glVertex2f(450.0,400.0);
-glEnd();
+snowMan(x,a);
 }
-void blast(void)//blast polygon construction
-{
-glPushMatrix();
-glTranslated(-10.0,-60.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(404.4,320.0);
-glVertex2f(384.0,285.0);
-glVertex2f(368.0,344.5);
-glVertex2f(344.0,355.0);
-glVertex2f(347.2,414.5);
-glVertex2f(332.8,442.5);
-glVertex2f(347.2,477.5);
-glVertex2f(352.0,530.0);
-glVertex2f(379.2,519.5);
-glVertex2f(396.8,565.0);
-glVertex2f(416.0,530.0);
-glVertex2f(440.0,547.5);
-glVertex2f(452.8,512.5);
-glVertex2f(472.0,512.5);
-glVertex2f(475.2,470.5);
-glVertex2f(488.0,442.5);
-glVertex2f(488.0,404.0);
-glVertex2f(470.0,372.5);
-glVertex2f(475.2,337.5);
-glVertex2f(464.0,306.0);
-glVertex2f(444.8,320.0);
-glVertex2f(425.6,285.0);
-glVertex2f(404.8,320.0);
-glEnd();
-glPopMatrix();
+
+void skiLeft()
+{x -= .08;
+
+a-=0.03;
+snowMan(x,a);
 }
-void road()
-{
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_POLYGON);//black road
-glVertex2f(0.0,0.0);
-glVertex2f(0.0,100.0);
-glVertex2f(500.0,100.0);
-glVertex2f(500.0,0.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(b,0.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);//white strips on road
-glVertex2f(0.0,40.0);
-glVertex2f(8.0,60.0);
-glVertex2f(58.0,60.0);
-glVertex2f(50.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(b,0.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(100.0,40.0);
-glVertex2f(108.0,60.0);
-glVertex2f(158.0,60.0);
-glVertex2f(150.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(b,0.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(200.0,40.0);
-glVertex2f(208.0,60.0);
-glVertex2f(258.0,60.0);
-glVertex2f(250.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(b,0.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(300.0,40.0);
-glVertex2f(308.0,60.0);
-glVertex2f(358.0,60.0);
-glVertex2f(350.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(b,0.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(400.0,40.0);
-glVertex2f(408.0,60.0);
-glVertex2f(458.0,60.0);
-glVertex2f(450.0,40.0);
-glEnd();
-glPopMatrix();
+
+void skiRight()
+{x -= .08;
+
+a+=0.03;
+snowMan(x,a);
 }
-void display2()
+
+
+
+ 
+void doInit()
 {
-glClear(GL_COLOR_BUFFER_BIT);
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(0.0,30.0);
-glVertex2f(0.0,55.0);
-glVertex2f(135.0,55.0);
-glVertex2f(135.0,30.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(135.0,40.0);
-glVertex2f(160.0,40.0);
-glVertex2f(160.0,37.0);
-glVertex2f(145.0,30.0);
-glVertex2f(135.0,30.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(0.0,55.0);
-glVertex2f(0.0,80.0);
-glVertex2f(10.0,80.0);
-glVertex2f(40.0,55.0);
-//glVertex2f(165.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(65.0,55.0);
-glVertex2f(50.0,70.0);
-glVertex2f(75.0,70.0);
-glVertex2f(90.0,55.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(d,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(70.0,40.0);
-glVertex2f(100.0,40.0);
-glVertex2f(80.0,15.0);
-glVertex2f(50.0,15.0);
-glEnd();
-glPopMatrix();
-}
-void display3()
-{
-glClear(GL_COLOR_BUFFER_BIT);
-building();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(0.0,30.0);
-glVertex2f(0.0,55.0);
-glVertex2f(135.0,55.0);
-glVertex2f(135.0,30.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,1.0,1.0);
-glBegin(GL_POLYGON);
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(0.0,0.0,0.0);
-glBegin(GL_LINE_LOOP);
-glVertex2f(135.0,55.0);
-glVertex2f(150.0,50.0);
-glVertex2f(155.0,45.0);
-glVertex2f(160.0,40.0);
-glVertex2f(135.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(135.0,40.0);
-glVertex2f(160.0,40.0);
-glVertex2f(160.0,37.0);
-glVertex2f(145.0,30.0);
-glVertex2f(135.0,30.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(0.0,55.0);
-glVertex2f(0.0,80.0);
-glVertex2f(10.0,80.0);
-glVertex2f(40.0,55.0);
-//glVertex2f(165.0,40.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(65.0,55.0);
-glVertex2f(50.0,70.0);
-glVertex2f(75.0,70.0);
-glVertex2f(90.0,55.0);
-glEnd();
-glPopMatrix();
-glPushMatrix();
-glTranslated(e,300.0,0.0);
-glColor3f(1.0,0.0,0.0);
-glBegin(GL_POLYGON);
-glVertex2f(70.0,40.0);
-glVertex2f(100.0,40.0);
-glVertex2f(80.0,15.0);
-glVertex2f(50.0,15.0);
-glEnd();
-glPopMatrix();
-}
-void myinit()
-{
-glClearColor(0.0f,0.0f,1.0f,0.0f);
-glColor3f(1.0,0.0,0.0);
-glPointSize(1.0);
+
+/* Background and foreground color */
+glColor3f(.0,1.0,1.0);
+glViewport(0,0,640,480);
+
+/* Select the projection matrix and reset it then
+setup our view perspective */
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
-gluOrtho2D(0.0,499.0,0.0,499.0);
+gluPerspective(30.0f,(GLfloat)640/(GLfloat)480,0.1f,200.0f);
+/* Select the modelview matrix, which we alter with rotatef() */
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+glClearDepth(2.0f);
+glEnable(GL_DEPTH_TEST);
+glDepthFunc(GL_LEQUAL);
+
 }
-void main(int argc, char* argv[])
+
+
+
+
+void menu(int id)
 {
-glutInit(&argc, argv);
-glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-glutInitWindowSize(500.0,500.0);
-glutInitWindowPosition(0,0);
-glutCreateWindow("AERO");
-glutDisplayFunc(display);
-myinit();
-glutTimerFunc(100,update,0);
+switch(id)
+{
+case 1:glutIdleFunc(w);
+break;
+case 2:glutIdleFunc(s);
+break;
+case 3:exit(0);
+break;
+
+}
+glFlush();
+glutSwapBuffers();
+glutPostRedisplay();
+}
+
+void mykey(unsigned char key,int x,int y)
+{
+
+if(key==&#39;c&#39;||key==&#39;C&#39;)
+{
+change=!change;
+
+
+
+
+}
+
+if(key==&#39;r&#39;||key==&#39;R&#39;)
+{
+rot=!rot;
+}
+
+if(key==&#39;w&#39; || key==&#39;W&#39;)
+{ y1+=0.2;
+}
+
+if(key==&#39;s&#39; || key==&#39;S&#39;)
+{ y1-=0.2;
+
+}
+
+if(key==&#39; &#39;)
+{play=!play;
+
+
+ 
+if(play)
+glutIdleFunc(w);
+else
+glutIdleFunc(s);
+
+}
+
+if(key==&#39;a&#39;|| key==&#39;A&#39;){
+
+a-=0.3;
+snowMan(x,a);
+
+}
+if(key==&#39;d&#39;|| key==&#39;D&#39;){
+
+a+=0.3;
+snowMan(x,a);
+}
+if(key==&#39;q&#39;|| key==&#39;Q&#39;){
+exit(0);
+
+}
+
+
+
+
+}
+
+int main(int argc, char *argv[])
+{
+glutInit(&amp;argc, argv);
+glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
+glutInitWindowSize(640,480);
+glutInitWindowPosition(30,0);
+glutCreateWindow(&quot;Snow/Man&quot;);
+glutDisplayFunc(doDisplay);
+glEnable(GL_LIGHTING);
+glEnable(GL_LIGHT0);
+glShadeModel(GL_SMOOTH);
+glEnable(GL_DEPTH_TEST);
+glEnable(GL_NORMALIZE);
+//glEnable(GL_BLEND);
+glutKeyboardFunc(mykey);
+glutCreateMenu(menu);
+glutAddMenuEntry(&quot;Ski &#39;s&#39;&quot;,1);
+glutAddMenuEntry(&quot;Stop Ski &#39;S&#39;&quot;,2);
+glutAddMenuEntry(&quot;Exit &#39;q&#39;&quot;,3);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+
+
+
+doInit();
 glutMainLoop();
+return 0;
+}
+void doDisplay()
+{
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+glClearColor(0.8,0.8,0.8,0);
+glLoadIdentity();
+
+glTranslatef(0.0f,0.0f,-13.0f);
+glColor3f(0,0,0);
+stroke_output(-2.0, 2.2, &quot;Interactive SnowMan by:&quot;);
+stroke_output(-2.0, 0.9, &quot;Candidate 1 name&quot;);
+stroke_output(-2.0, 0.0, &quot;Candidate 2 name&quot;);
+
+GLfloat mat_ambient[]={0.0f,1.0f,2.0f,1.0f};
+GLfloat mat_diffuse[]={0.0f,1.5f,.5f,1.0f};
+GLfloat mat_specular[]={5.0f,1.0f,1.0f,1.0f};
+GLfloat mat_shininess[]={50.0f};
+
+
+
+
+glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
+glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
+
+/*light source properties*/
+GLfloat lightIntensity[]={10.7f,.7f,100.7f,1.0f};
+GLfloat light_position[]={0.0f,5.0f,10.0f,0.0f};
+glLightfv(GL_LIGHT0,GL_DIFFUSE,lightIntensity);
+glLightfv(GL_LIGHT0,GL_POSITION,light_position);
+
+glEnable(GL_COLOR_MATERIAL);
+glFlush();
+glutSwapBuffers();
+
 }
