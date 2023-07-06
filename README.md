@@ -1,8 +1,8 @@
-#include <windows.h>
-#include <string.h>;
-#include <stdarg.h>;
-#include <stdio.h>;
-#include <glut.h>;
+#include<stdbool.h>
+#include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <GL/glut.h>
 static double x=0.0;
 static double a=0.0;
 bool change=true;
@@ -13,8 +13,7 @@ bool play=false;
 void doDisplay();
 
 static float y1=0;
-void
-stroke_output(GLfloat x, GLfloat y, char *format,...)
+void stroke_output(GLfloat x, GLfloat y, char *format,...)
 {
 va_list args;
 char buffer[200], *p;
@@ -35,31 +34,19 @@ glPushMatrix();
 
 glColor3f(0,1,0);
 glBegin(GL_POLYGON);
-
 glVertex2f(0,0);
-
 glVertex2f(-.5,0.5);
-
 glVertex2f(0,0.7);
-
 glVertex2f(-0.3,1);
-
-
-
- 
 glVertex2f(0.2,0.9);
-
 glVertex2f(0.8,2);
-
 glVertex2f(0.8,0.9);
 glVertex2f(1.2,1);
 glVertex2f(0.8,0.8);
 glVertex2f(1.2,0.5);
 glVertex2f(0.5,0);
-
 glEnd();
 glPopMatrix();
-
 glPushMatrix();
 glTranslatef(0.5,-0.4,0);
 glScaled(0.2,1,0.1);
@@ -85,10 +72,6 @@ glScaled(1.2,1,1.2);
 //top spere
 glPushMatrix();
 glScaled(0.8,1.0,0.8);
-
-
-
-
 glTranslatef(0.0,1.2,0.0);
 glColor3f(1,1,1);
 glutSolidSphere(0.4,80,120);
@@ -112,10 +95,6 @@ glPopMatrix();
 
 glPushMatrix();
 glScaled(0.8,1.0,0.8);
-
-
-
-
 glTranslatef(0.0,1.3,0.0);
 glutSolidCone(0.1,0.9,80,120);
 glPopMatrix();
@@ -138,10 +117,6 @@ glColor3f(1,1,1);
 glScaled(0.8,0.8,0.8);
 glTranslatef(0.0,0.2,0.0);
 glutSolidSphere(0.9,80,120);
-
-
-
- 
 glPopMatrix();
 
 //buttons
@@ -161,8 +136,6 @@ glScaled(0.2,0.2,0.2);
 glutSolidSphere(0.5,80,120);
 glPopMatrix();
 
-
-
  
 glPushMatrix();
 glColor3f(1,0,0);
@@ -180,12 +153,7 @@ glPopMatrix();
 }
 
 void andro(){
-
 glPushMatrix();
-
-
-
-
 glTranslatef(a,y1,0.0);
 
 //body
@@ -208,10 +176,6 @@ glScaled(0.1,1,0.1);
 glRotatef(90,1,0,0);
 glutSolidTorus(0.4,0.8,30,30);
 glPopMatrix();
-
-
-
-
 //head
 
 glPushMatrix();
@@ -234,13 +198,8 @@ glPopMatrix();
 glPushMatrix();
 glTranslatef(-0.15,1,0);
 glScaled(0.5,2,0);
-
-
-
-
 glutSolidSphere(0.2,30,30);
 glPopMatrix();
-
 glPushMatrix();
 glTranslatef(0.15,1,0);
 glScaled(0.5,2,0);
@@ -260,9 +219,6 @@ glPopMatrix();
 
 glPushMatrix();
 glTranslatef(-0.15,-0.8,0);
-
-
-
 
 glRotatef(r1,1,0,0);
 glScaled(0.1,1,0.1);
@@ -286,9 +242,6 @@ if(rot){
 glRotatef(30,0,1,0);
 }
 
-
-
-
 glColor3f(0.3,.3,.3);
 
 // Draw the bottom box
@@ -304,16 +257,12 @@ glColor3f(1,1,0);
 glPushMatrix();
 glTranslatef(0.0,0.0,rang);
 
-for(int i=0;i&lt;500;i+=13){
+for(int i=0;i<500;i+=13){
 
 glPushMatrix();
 glTranslatef(2.5,-0.5,7.0+i);
 tree();
 glPopMatrix();
-
-
-
-
 glPushMatrix();
 glTranslatef(-2.5,-0.5,0+i);
 tree();
@@ -340,7 +289,7 @@ glTranslatef(ad,0,0);
 drawSnowman();
 glPopMatrix();
 }else{
-if(y1&gt;=1.5)
+if(y1>=1.5)
 glRotatef(75,1,0,0);
 andro();
 }
@@ -355,9 +304,6 @@ r1+=10;
 x -= .08;
 
 snowMan(x,a);
-
-
-
 
 }
 
@@ -405,8 +351,6 @@ glDepthFunc(GL_LEQUAL);
 }
 
 
-
-
 void menu(int id)
 {
 switch(id)
@@ -427,7 +371,7 @@ glutPostRedisplay();
 void mykey(unsigned char key,int x,int y)
 {
 
-if(key==&#39;c&#39;||key==&#39;C&#39;)
+if(key=='c'||key=='C')
 {
 change=!change;
 
@@ -436,21 +380,21 @@ change=!change;
 
 }
 
-if(key==&#39;r&#39;||key==&#39;R&#39;)
+if(key=='r'||key=='R')
 {
 rot=!rot;
 }
 
-if(key==&#39;w&#39; || key==&#39;W&#39;)
+if(key=='w' || key=='W')
 { y1+=0.2;
 }
 
-if(key==&#39;s&#39; || key==&#39;S&#39;)
+if(key=='s' || key=='S')
 { y1-=0.2;
 
 }
 
-if(key==&#39; &#39;)
+/*if(key=='')
 {play=!play;
 
 
@@ -460,20 +404,20 @@ glutIdleFunc(w);
 else
 glutIdleFunc(s);
 
-}
+}*/
 
-if(key==&#39;a&#39;|| key==&#39;A&#39;){
+if(key=='a'|| key=='A'){
 
 a-=0.3;
 snowMan(x,a);
 
 }
-if(key==&#39;d&#39;|| key==&#39;D&#39;){
+if(key=='d'|| key=='D'){
 
 a+=0.3;
 snowMan(x,a);
 }
-if(key==&#39;q&#39;|| key==&#39;Q&#39;){
+if(key=='q'|| key=='Q'){
 exit(0);
 
 }
@@ -485,11 +429,11 @@ exit(0);
 
 int main(int argc, char *argv[])
 {
-glutInit(&amp;argc, argv);
+glutInit(&argc, argv);
 glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB);
 glutInitWindowSize(640,480);
 glutInitWindowPosition(30,0);
-glutCreateWindow(&quot;Snow/Man&quot;);
+glutCreateWindow("Snow/Man");
 glutDisplayFunc(doDisplay);
 glEnable(GL_LIGHTING);
 glEnable(GL_LIGHT0);
@@ -499,14 +443,10 @@ glEnable(GL_NORMALIZE);
 //glEnable(GL_BLEND);
 glutKeyboardFunc(mykey);
 glutCreateMenu(menu);
-glutAddMenuEntry(&quot;Ski &#39;s&#39;&quot;,1);
-glutAddMenuEntry(&quot;Stop Ski &#39;S&#39;&quot;,2);
-glutAddMenuEntry(&quot;Exit &#39;q&#39;&quot;,3);
+glutAddMenuEntry("Ski 's'",1);
+glutAddMenuEntry("Stop Ski    'S'",2);
+glutAddMenuEntry("Exit        'q'",3);
 glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-
-
-
 doInit();
 glutMainLoop();
 return 0;
@@ -519,24 +459,19 @@ glLoadIdentity();
 
 glTranslatef(0.0f,0.0f,-13.0f);
 glColor3f(0,0,0);
-stroke_output(-2.0, 2.2, &quot;Interactive SnowMan by:&quot;);
-stroke_output(-2.0, 0.9, &quot;Candidate 1 name&quot;);
-stroke_output(-2.0, 0.0, &quot;Candidate 2 name&quot;);
+stroke_output(-2.0, 2.2, "Interactive SnowMan by:");
+stroke_output(-2.0, 0.9, "Candidate 1 sindhu");
+stroke_output(-2.0, 0.0, "Candidate 2 sunaina gp");
 
 GLfloat mat_ambient[]={0.0f,1.0f,2.0f,1.0f};
 GLfloat mat_diffuse[]={0.0f,1.5f,.5f,1.0f};
 GLfloat mat_specular[]={5.0f,1.0f,1.0f,1.0f};
 GLfloat mat_shininess[]={50.0f};
-
-
-
-
 glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
 glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
 glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
 glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
 
-/*light source properties*/
 GLfloat lightIntensity[]={10.7f,.7f,100.7f,1.0f};
 GLfloat light_position[]={0.0f,5.0f,10.0f,0.0f};
 glLightfv(GL_LIGHT0,GL_DIFFUSE,lightIntensity);
